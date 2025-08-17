@@ -1,5 +1,6 @@
 package com.example.spring.RESTAPI.service.implement;
 
+import com.example.spring.RESTAPI.dto.AddstudentRequestDTO;
 import com.example.spring.RESTAPI.dto.StudentDTO;
 import com.example.spring.RESTAPI.entity.Student;
 import com.example.spring.RESTAPI.repository.StudentRepository;
@@ -33,6 +34,13 @@ public class StudentServiceImpl implements StudentService {
     public StudentDTO getStudentbyId(Long id){
         Student student = studentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("user not found with this Id"+id));
 
+        return modelMapper.map(student,StudentDTO.class);
+    }
+
+    @Override
+    public StudentDTO createnewStudent(AddstudentRequestDTO addstudentRequestDTO) {
+        Student newstudent = modelMapper.map(addstudentRequestDTO, Student.class);
+        Student student = studentRepository.save(newstudent);
         return modelMapper.map(student,StudentDTO.class);
     }
 }
